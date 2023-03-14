@@ -60,7 +60,7 @@ public class JdbcTemplateItemRepositoryV3 implements ItemRepository {
                 .addValue("itemName", updateParam.getItemName())
                 .addValue("price", updateParam.getPrice())
                 .addValue("quantity", updateParam.getQuantity())
-                .addValue("item", itemId); // 이 부분이 별도로 필요
+                .addValue("id", itemId); // 이 부분이 별도로 필요
         template.update(sql, param);
     }
 
