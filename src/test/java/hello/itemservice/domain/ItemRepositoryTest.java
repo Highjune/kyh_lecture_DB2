@@ -8,23 +8,38 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
 @SpringBootTest
 class ItemRepositoryTest {
 
     @Autowired
     ItemRepository itemRepository;
 
+/*
+    @Autowired
+    PlatformTransactionManager transactionManager;
+    TransactionStatus status;
+
+    @BeforeEach
+    void beforeEach() {
+        status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+    }
+*/
+
     @AfterEach
     void afterEach() {
-        //MemoryItemRepository 의 경우 제한적으로 사용
+        // MemoryItemRepository 의 경우 제한적으로 사용
         if (itemRepository instanceof MemoryItemRepository) {
             ((MemoryItemRepository) itemRepository).clearStore();
         }
+        // 트랜잭션 롤백
+//        transactionManager.rollback(status);
     }
 
     @Test
