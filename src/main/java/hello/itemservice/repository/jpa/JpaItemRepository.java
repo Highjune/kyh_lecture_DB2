@@ -51,7 +51,7 @@ public class JpaItemRepository implements ItemRepository {
 
     @Override
     public List<Item> findAll(ItemSearchCond cond) {
-        String jpql = "selectaa i from Item i"; // 여기서 Item와 i는 Entity임.
+        String jpql = "select i from Item i"; // 여기서 Item와 i는 Entity임.
 
         // 그런데 jpql 을 위처럼 직접 작성하게 되면 동적 쿼리 작성이 아래처럼 너무 어렵다.
         Integer maxPrice = cond.getMaxPrice();
@@ -62,10 +62,8 @@ public class JpaItemRepository implements ItemRepository {
         }
 
         boolean andFlag = false;
-        List<Object> param = new ArrayList<>();
         if (StringUtils.hasText(itemName)) {
             jpql += " i.itemName like concat('%',:itemName,'%')";
-            param.add(itemName);
             andFlag = true;
         }
         if (maxPrice != null) {
@@ -74,7 +72,6 @@ public class JpaItemRepository implements ItemRepository {
                 jpql += " and";
             }
             jpql += " i.price <= :maxPrice";
-            param.add(maxPrice);
         }
         log.info("jpql={}", jpql);
 
