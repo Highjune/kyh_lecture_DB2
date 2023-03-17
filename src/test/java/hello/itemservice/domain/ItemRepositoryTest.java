@@ -4,6 +4,7 @@ import hello.itemservice.repository.ItemRepository;
 import hello.itemservice.repository.ItemSearchCond;
 import hello.itemservice.repository.ItemUpdateDto;
 import hello.itemservice.repository.memory.MemoryItemRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Slf4j
 @Transactional
 @SpringBootTest
 class ItemRepositoryTest {
@@ -56,6 +58,7 @@ class ItemRepositoryTest {
     }
 
     @Test
+//    @Commit // update 쿼리가 나가는 것을 확인가능(아니면 flush 해도 된다). 아래에서는 캐쉬에 있는 것들을 찾고 수정하고 롤백하므로 업데이트 쿼리 안 나감.
     void updateItem() {
         //given
         Item item = new Item("item1", 10000, 10);
@@ -80,6 +83,7 @@ class ItemRepositoryTest {
         Item item2 = new Item("itemA-2", 20000, 20);
         Item item3 = new Item("itemB-1", 30000, 30);
 
+        log.info("repository={}", itemRepository.getClass());
         itemRepository.save(item1);
         itemRepository.save(item2);
         itemRepository.save(item3);
